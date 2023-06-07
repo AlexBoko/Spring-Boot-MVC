@@ -1,39 +1,40 @@
 package com.example.controller;
 
-import com.example.service.EmployeeService;
 import com.example.model.Employee;
+import com.example.service.EmployeeService;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-
 @RestController
-@RequestMapping("/employee")
-@Getter
+@RequestMapping("/employees")
 @AllArgsConstructor
 public class EmployeeController {
     private final EmployeeService employeeService;
 
-    @GetMapping("/salary/sum")
-    public double getTotalSalary() {
-        return employeeService.getTotalSalary();
+    @PostMapping("/")
+    public void createEmployee(@RequestBody Employee employee) {
+        employeeService.createEmployee(employee);
     }
 
-    @GetMapping("/salary/min")
-    public Employee getMinSalaryEmployee() {
-        return employeeService.getMinSalaryEmployee();
+    @GetMapping("/{id}")
+    public Employee getEmployeeById(@PathVariable("id") Long id) {
+        return employeeService.getEmployeeById(id);
     }
 
-    @GetMapping("/salary/max")
-    public Employee getMaxSalaryEmployee() {
-        return employeeService.getMaxSalaryEmployee();
+    @PutMapping("/{id}")
+    public void updateEmployee(@PathVariable("id") Long id, @RequestBody Employee employee) {
+        employeeService.updateEmployee(id, employee);
     }
 
-    @GetMapping("/high-salary")
-    public List<Employee> getHighSalaryEmployees() {
-        return employeeService.getHighSalaryEmployees();
+    @DeleteMapping("/{id}")
+    public void deleteEmployeeById(@PathVariable("id") Long id) {
+        employeeService.deleteEmployeeById(id);
+    }
+
+    @GetMapping("/salaryHigherThan")
+    public List<Employee> getEmployeesWithSalaryHigherThan(@RequestParam("salary") double salary) {
+        return employeeService.getEmployeesWithSalaryHigherThan(salary);
     }
 }

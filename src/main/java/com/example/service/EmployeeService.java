@@ -3,7 +3,7 @@ package com.example.service;
 import com.example.repository.EmployeeRepository;
 import com.example.model.Employee;
 import org.springframework.stereotype.Service;
-import java.util.Comparator;
+
 import java.util.List;
 
 @Service
@@ -14,33 +14,40 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public double getTotalSalary() {
-        List<Employee> employees = employeeRepository.findAll();
-        return employees.stream()
-                .mapToDouble(Employee::getSalary)
-                .sum();
+    public Employee createEmployee(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
-    public Employee getMinSalaryEmployee() {
-        List<Employee> employees = employeeRepository.findAll();
-        return employees.stream()
-                .min(Comparator.comparingDouble(Employee::getSalary))
-                .orElse(null);
+    public Employee updateEmployee(Long id, Employee employee) {
+        Employee existingEmployee = employeeRepository.findById(id);
+        if (existingEmployee == null) {
+            // Обработка ошибки, если сотрудник не найден
+        }
+        // Обновляем данные сотрудника
+        existingEmployee.setName(employee.getName());
+        existingEmployee.setSalary(employee.getSalary());
+
+        // Сохраняем обновленного сотрудника
+        return employeeRepository.save(existingEmployee);
     }
 
-    public Employee getMaxSalaryEmployee() {
-        List<Employee> employees = employeeRepository.findAll();
-        return employees.stream()
-                .max(Comparator.comparingDouble(Employee::getSalary))
-                .orElse(null);
+    public Employee getEmployeeById(Long id) {
+        Employee employee = employeeRepository.findById(id);
+        if (employee == null) {
+            // Обработка ошибки, если сотрудник не найден
+        }
+        return employee;
     }
 
-    public List<Employee> getHighSalaryEmployees() {
-        List<Employee> employees = employeeRepository.findAll();
-        double averageSalary = getTotalSalary() / employees.size();
-        return employees.stream()
-                .filter(employee -> employee.getSalary() > averageSalary)
-                .toList();
+    public void deleteEmployeeById(Long id) {
+        Employee employee = employeeRepository.findById(id);
+        if (employee == null) {
+            // Обработка ошибки, если сотрудник не найден
+        }
+        employeeRepository.deleteById(id);
+    }
+
+    public List<Employee> getEmployeesWithSalaryHigherThan(double salary) {
+        return employeeRepository.findBySalaryGreaterThan(salary);
     }
 }
-
