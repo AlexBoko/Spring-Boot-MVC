@@ -1,23 +1,16 @@
-package com.example.model;
+package com.example.dto;
 
-import javax.persistence.*;
-
-@Entity
-public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class EmployeeDto {
     private Long id;
     private String name;
     private double salary;
+    private PositionDto position;
 
-    @ManyToOne
-    @JoinColumn(name = "position_id")
-    private Position position;
-
-    public Employee() {
+    public EmployeeDto() {
     }
 
-    public Employee(String name, double salary, Position position) {
+    public EmployeeDto(Long id, String name, double salary, PositionDto position) {
+        this.id = id;
         this.name = name;
         this.salary = salary;
         this.position = position;
@@ -47,11 +40,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Position getPosition() {
+    public PositionDto getPosition() {
         return position;
     }
 
-    public void setPosition(Position position) {
+    public void setPosition(PositionDto position) {
         this.position = position;
     }
 }
