@@ -1,7 +1,7 @@
-package com.example.service;
+package com.example.application.report.service;
 
 import com.example.dto.EmployeeDto;
-import com.example.model.Employee;
+import com.example.application.report.model.Employee;
 import org.modelmapper.ModelMapper;
 
 public class EmployeeMapper {

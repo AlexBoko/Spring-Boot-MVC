@@ -1,8 +1,8 @@
-package com.example.repository;
+package com.example.application.report.repository;
 
 import com.example.dto.EmployeeDto;
-import com.example.model.Employee;
-import com.example.model.Position;
+import com.example.application.report.model.Employee;
+import com.example.application.report.model.Position;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;

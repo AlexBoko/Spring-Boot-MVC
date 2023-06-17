@@ -1,7 +1,7 @@
 package com.example.converter;
 
 import com.example.dto.EmployeeDto;
-import com.example.model.Employee;
+import com.example.application.report.model.Employee;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
