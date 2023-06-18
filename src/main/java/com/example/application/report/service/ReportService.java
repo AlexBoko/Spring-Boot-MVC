@@ -8,11 +8,17 @@ import com.example.converter.ReportMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ReportService {
@@ -38,9 +44,9 @@ public class ReportService {
         Report savedReport = reportRepository.save(report);
 
         String json = generateJsonReport(savedReport);
-        String filePath = saveJsonReport(json, savedReport.getId());
+        String fileName = saveJsonReport(json, savedReport.getId());
 
-        savedReport.setFilePath(filePath);
+        savedReport.setFilePath(fileName);
         reportRepository.save(savedReport);
 
         return savedReport.getId();
@@ -57,7 +63,7 @@ public class ReportService {
         // Код преобразования reportDto в JSON-строку
         // ...
 
-        return reportDirectory;
+        return json;
     }
 
     private String saveJsonReport(String json, Long reportId) {
@@ -70,10 +76,59 @@ public class ReportService {
             e.printStackTrace();
         }
 
-        return filePath;
+        return fileName;
     }
 
     public ReportDto getReportById(Long id) {
         return reportRepository.findById(id).map(reportMapper::toReportDto).orElse(null);
     }
+
+    public String saveEmployeeFile(MultipartFile file) {
+        String fileName = "employees.csv";
+        String filePath = reportDirectory + fileName;
+
+        try {
+            file.transferTo(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return filePath;
+    }
+
+    public ResponseEntity<File> getReportFile(Long id) {
+        Report report = reportRepository.findById(id).orElse(null);
+        if (report != null) {
+            String filePath = report.getFilePath();
+            if (filePath != null) {
+                File file = new File(filePath);
+                if (file.exists()) {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    headers.setContentDispositionFormData("attachment", file.getName());
+
+                    return ResponseEntity.ok()
+                            .headers(headers)
+                            .body(file);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public void deleteReportFile(Long id) {
+        Report report = reportRepository.findById(id).orElse(null);
+        if (report != null) {
+            String filePath = report.getFilePath();
+            if (filePath != null) {
+                try {
+                    Files.deleteIfExists(Path.of(filePath));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
+
