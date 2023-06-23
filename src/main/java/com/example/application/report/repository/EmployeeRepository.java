@@ -1,7 +1,7 @@
-package com.example.repository;
+package com.example.application.report.repository;
 
+import com.example.application.report.model.Employee;
 import com.example.dto.EmployeeDto;
-import com.example.model.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
