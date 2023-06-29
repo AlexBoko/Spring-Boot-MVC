@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class EmployeeService {
+public abstract class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     public EmployeeService(EmployeeRepository employeeRepository) {
@@ -102,6 +102,8 @@ public class EmployeeService {
         employeeRepository.updateEmployee(id, existingEmployee);
         return employee;
     }
+
+    public abstract void createEmployee(Employee employee);
 
     public EmployeeDto getEmployeeById(Long id) throws EmployeeNotFoundException {
         // Получение сотрудника по идентификатору
