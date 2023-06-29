@@ -11,38 +11,41 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmployeeServiceImpl extends EmployeeService {
     private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
+    private final EmployeeRepository employeeRepository;
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         super(employeeRepository);
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
     public void createEmployee(Employee employee) {
-        logger.info("Was invoked method for create employee: {}", employee);
+        logger.info("The method createEmployee has been invoked");
         try {
-            // Логика создания сотрудника
-            logger.debug("Successfully created employee: {}", employee);
+
+            logger.debug("Employee created successfully: {}", employee);
         } catch (Exception e) {
-            logger.error("Failed to create employee: {}", employee, e);
+            logger.error("Error occurred while creating employee: {}", employee, e);
             throw new RuntimeException("Failed to create employee", e);
         }
     }
 
     @Override
     public EmployeeDto getEmployeeById(Long id) {
-        logger.info("Was invoked method to get employee by id: {}", id);
+        logger.info("The method getEmployeeById has been invoked");
         try {
-            // Логика получения сотрудника по id
+
             Employee employee = employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Employee not found"));
-            logger.debug("Successfully retrieved employee with id: {}", id);
+            logger.debug("Employee retrieved successfully by ID: {}", id);
             return convertToDto(employee);
         } catch (Exception e) {
-            logger.error("Failed to get employee with id: {}", id, e);
-            throw new RuntimeException("Failed to get employee", e);
+            logger.error("Error occurred while retrieving employee by ID: {}", id, e);
+            throw new RuntimeException("Failed to retrieve employee", e);
         }
     }
 
     private EmployeeDto convertToDto(Employee employee) {
+
         EmployeeDto employeeDto = new EmployeeDto();
         employeeDto.setId(employee.getId());
         employeeDto.setName(employee.getName());
