@@ -5,13 +5,11 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import ch.qos.logback.core.Layout;
 
-import java.io.Serializable;
-
 public class ErrorFileAppender extends AppenderBase<ILoggingEvent> {
 
     private Layout<ILoggingEvent> layout;
 
-    protected ErrorFileAppender(Layout<ILoggingEvent> layout) {
+    public ErrorFileAppender(Layout<ILoggingEvent> layout) {
         this.layout = layout;
     }
 

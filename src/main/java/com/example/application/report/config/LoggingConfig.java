@@ -21,16 +21,16 @@ public class LoggingConfig {
     private String logFileName;
 
     @Bean
-    public FileAppender fileAppender() {
-        RollingFileAppender fileAppender = new RollingFileAppender();
+    public FileAppender<ILoggingEvent> fileAppender() {
+        RollingFileAppender<ILoggingEvent> fileAppender = new RollingFileAppender<>();
         fileAppender.setName("FILE");
         fileAppender.setFile(logFileName);
 
-        SizeBasedTriggeringPolicy triggeringPolicy = new SizeBasedTriggeringPolicy();
+        SizeBasedTriggeringPolicy<ILoggingEvent> triggeringPolicy = new SizeBasedTriggeringPolicy<>();
         triggeringPolicy.setMaxFileSize(FileSize.valueOf("10MB"));
         fileAppender.setTriggeringPolicy(triggeringPolicy);
 
-        TimeBasedRollingPolicy rollingPolicy = new TimeBasedRollingPolicy();
+        TimeBasedRollingPolicy<ILoggingEvent> rollingPolicy = new TimeBasedRollingPolicy<>();
         rollingPolicy.setFileNamePattern(logFileName + ".%d{yyyy-MM-dd}.gz");
         rollingPolicy.setMaxHistory(7);
         fileAppender.setRollingPolicy(rollingPolicy);
@@ -48,7 +48,6 @@ public class LoggingConfig {
     }
 
     private Layout<ILoggingEvent> createLayout() {
-
 
         return null;
     }
