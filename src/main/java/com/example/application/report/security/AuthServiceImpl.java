@@ -23,7 +23,7 @@ public class AuthServiceImpl implements AuthService {
                     new UsernamePasswordAuthenticationToken(username, password));
             return jwtTokenProvider.generateToken(authentication);
         } catch (AuthenticationException e) {
-            throw new UnauthorizedException("Invalid username or password");
+            throw new RuntimeException("Invalid username or password", e);
         }
     }
 }
